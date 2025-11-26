@@ -44,7 +44,7 @@ class ParentNode(HTMLNode):
         if self.tag is None:
             raise ValueError("ParentNode has no tag...")
         if self._children_missing:
-            raise ValueError("PArentNode is missing children...")
+            raise ValueError("ParentNode is missing children...")
         if len(self.children) == 0:
             raise ValueError("ParentNode must have at least one child...")
 
