@@ -1,5 +1,9 @@
 import unittest
-from blocks import BlockType, markdown_to_blocks, block_to_block_type
+from blocks import (
+    BlockType,
+    markdown_to_blocks,
+    block_to_block_type
+)
 from textnode import TextNode, TextType
 
 
@@ -53,12 +57,12 @@ class TestBlockToBlockType(unittest.TestCase):
     def test_unordered_list(self):
         block = "- This is a list item\n- This is a second list item"
         result = block_to_block_type(block)
-        self.assertEqual(result, BlockType.UNORDERED_LIST)
+        self.assertEqual(result, BlockType.ULIST)
 
     def test_ordered_list(self):
         block = "1. This is a list item\n2. This is a second list item"
         result = block_to_block_type(block)
-        self.assertEqual(result, BlockType.ORDERED_LIST)
+        self.assertEqual(result, BlockType.OLIST)
 
     def test_paragraph_with_unordered_list(self):
         markdown = """This is a paragraph.
@@ -74,4 +78,4 @@ class TestBlockToBlockType(unittest.TestCase):
         self.assertEqual(first_type, BlockType.PARAGRAPH)
 
         second_type = block_to_block_type(blocks[1])
-        self.assertEqual(second_type, BlockType.UNORDERED_LIST)
+        self.assertEqual(second_type, BlockType.ULIST)

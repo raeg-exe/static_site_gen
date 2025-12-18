@@ -14,8 +14,8 @@ class BlockType(Enum):
     HEADING = "heading"
     CODE =  "code"
     QUOTE = "quote"
-    UNORDERED_LIST = "unordered_list"
-    ORDERED_LIST = "ordered_list"
+    ULIST = "unordered_list"
+    OLIST = "ordered_list"
 
 def block_to_block_type(block):
     lines = block.split("\n")
@@ -36,7 +36,7 @@ def block_to_block_type(block):
         for line in lines:
             if not line.startswith("- "):
                 return BlockType.PARAGRAPH
-        return BlockType.UNORDERED_LIST
+        return BlockType.ULIST
 
     if lines[0].startswith("1. "):
         i = 1
@@ -45,6 +45,6 @@ def block_to_block_type(block):
                 return BlockType.PARAGRAPH
             else:
                 i += 1
-        return BlockType.ORDERED_LIST
+        return BlockType.OLIST
 
     return BlockType.PARAGRAPH
