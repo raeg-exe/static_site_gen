@@ -17,25 +17,61 @@ from markdown_functions import text_to_textnodes
 
 
 def paragraph_to_html_node(block):
-    block = block.split('\n')
-    block = ' '.join(block)
-    children = text_to_children(block)
+    lines = block.split('\n')
+    lines = [line.strip() for line in lines]
+    paragraph = ' '.join(lines)
+    children = text_to_children(paragraph)
     return ParentNode(tag="p", children=children)
 
 def heading_to_html_node(block):
-    pass
+    level = 0
+    for char in block:
+        if char == "#":
+            level += 1
+        else:
+            break
+    text = block[level +1:]
+    tag = f"h{level}"
+    children = text_to_children(text)
+    return ParentNode(tag, children)
 
 def code_to_html_node(block):
-    pass
+    text = block[4: -3]
+    node = TextNode(text, TextType.TEXT)
+    html_node = text_node_to_html_node(node)
+    code_node = ParentNode("code", [html_node])
+    pre_node = ParentNode("pre", [code_node])
+    return pre_node
 
 def quote_to_html_node(block):
-    pass
+    clean_lines = []
+    lines = block.split('\n')
+    for line in lines:
+        clean_lines.append(line.lstrip('>').strip())
+    clean_lines = ' '.join(clean_lines)
+    children = text_to_children(clean_lines)
+    return ParentNode("blockquote", children)
 
 def olist_to_html_node(block):
-    pass
+    html_items = []
+    lines = block.split('\n')
+    for line in lines:
+        text = line[3:]
+        children = text_to_children(text)
+        ol_node = ParentNode("li", children)
+        html_items.append(ol_node)
+    return ParentNode("ol", html_items)
 
 def ulist_to_html_node(block):
-    pass
+    html_items = []
+    lines = block.split('\n')
+    for line in lines:
+        text = line.lstrip("- ")
+        children = text_to_children(text)
+        li_node = ParentNode("li", children)
+        html_items.append(li_node)
+    return ParentNode("ul", html_items)
+    
 
 def text_to_children(text):
     html_nodes = []
