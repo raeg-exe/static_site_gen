@@ -116,3 +116,25 @@ def markdown_to_html_node(markdown):
             raise Exception("Invalid Markdown...")
 
     return ParentNode(tag="div", children=html_nodes)
+
+
+def extract_title(markdown):
+    strings = markdown.split('\n')
+    for string in strings:
+        if string.startswith('# '):
+            title = string.lstrip('# ')
+            title = title.strip()
+            return title
+    else:
+        raise Exception("No h1 heading to extract...")
+
+def generate_page(from_path, template_path, dst_path):
+    print(f"Generating page from {from_path} to {dst_path} using {template_path}...")
+    with open(from_path, "r") as md_file:
+        markdown = md_file.read()
+    with open(template_path, "r") as file:
+        template = file.read()
+    content_html = markdown_to_html_node(markdown).to_html()
+    title = extract_title(markdown)
+    full_html = template.replace("{{ Title }}", title)
+    full_html = full_html.replace("{{ Content }}", content_html)

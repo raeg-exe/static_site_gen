@@ -4,7 +4,11 @@ from blocks import (
     markdown_to_blocks,
     block_to_block_type
 )
-from markdown_to_html_node import markdown_to_html_node
+from markdown_to_html_node import (
+    markdown_to_html_node,
+    extract_title,
+    generate_page
+)
 from textnode import TextNode, TextType
 
 
@@ -191,3 +195,23 @@ the **same** even with inline stuff
             html,
             "<div><h1>Heading</h1><ol><li>first</li><li>second</li></ol></div>"
         )
+
+# test extract title
+
+class TestExtractTitle(unittest.TestCase):
+    def test_extract_title_simple(self):
+        markdown = "# Hello"
+        self.assertEqual(extract_title(markdown), "Hello")
+
+    def test_extract_title_later_line(self):
+        markdown = "Intro text\n# Tolkien Fan Club\nMore text"
+        self.assertEqual(extract_title(markdown), "Tolkien Fan Club")
+
+    def test_extract_title_with_spaces(self):
+        markdown = "#   Tolkien Fan Club   "
+        self.assertEqual(extract_title(markdown), "Tolkien Fan Club")
+
+    def test_extract_title_no_h1_raises(self):
+        markdown = "## Not an h1\nJust text"
+        with self.assertRaises(Exception):
+            extract_title(markdown)
