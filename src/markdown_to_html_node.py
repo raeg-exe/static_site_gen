@@ -14,6 +14,7 @@ from textnode import (
     text_node_to_html_node
 )
 from markdown_functions import text_to_textnodes
+import os
 
 
 def paragraph_to_html_node(block):
@@ -130,11 +131,21 @@ def extract_title(markdown):
 
 def generate_page(from_path, template_path, dst_path):
     print(f"Generating page from {from_path} to {dst_path} using {template_path}...")
+
     with open(from_path, "r") as md_file:
         markdown = md_file.read()
     with open(template_path, "r") as file:
         template = file.read()
+
     content_html = markdown_to_html_node(markdown).to_html()
     title = extract_title(markdown)
+
     full_html = template.replace("{{ Title }}", title)
     full_html = full_html.replace("{{ Content }}", content_html)
+
+    destination = os.path.dirname(dst_path)
+    if destination:
+        os.makedirs(destination, exist_ok=True)
+
+    with open(dst_path, "w") as f:
+        f.write(full_html)
