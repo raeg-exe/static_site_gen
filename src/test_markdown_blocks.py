@@ -196,7 +196,7 @@ the **same** even with inline stuff
             "<div><h1>Heading</h1><ol><li>first</li><li>second</li></ol></div>"
         )
 
-# test extract title
+# Test Extract Title
 
 class TestExtractTitle(unittest.TestCase):
     def test_extract_title_simple(self):
