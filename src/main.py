@@ -1,5 +1,5 @@
 from copystatic import delete_dir, copy_files_recursive
-from markdown_to_html_node import generate_page, generate_page_recursive
+from markdown_to_html_node import generate_page_recursive
 
 dir_path_static = "./static"
 dir_path_public = "./public"
